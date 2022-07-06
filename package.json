@@ -1,0 +1,23 @@
+{
+  "name": "blaze",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HenriqueMartinez/blaze.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HenriqueMartinez/blaze/issues"
+  },
+  "homepage": "https://github.com/HenriqueMartinez/blaze#readme",
+  "dependencies": {
+    "telegraf": "^4.8.5"
+  }
+}
