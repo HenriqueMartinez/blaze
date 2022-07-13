@@ -78,6 +78,7 @@ class H027Client extends Telegraf {
                 if (ctx.message.from.id == this.ADMINISTRATOR_ID) {
                     this.SESSION = this.SESSION == 'FREE' ? 'VIP' : 'FREE'
                     await ctx.reply(`<b>❗ A sessão foi alterada para ${this.SESSION} com sucesso!</b>`, { parse_mode: 'HTML' }); 
+                    console.log(`Sessão alterada!`)
                 }
             });
 
@@ -91,7 +92,7 @@ class H027Client extends Telegraf {
             
             this.command('resetstats', async (ctx) => {
                 if (ctx.message.from.id == this.ADMINISTRATOR_ID) {
-                    await ctx.reply(`<b>❗ A sessão foi alterada para ${this.SESSION} com sucesso!</b>`, { parse_mode: 'HTML' }).then(async (m) => {
+                    await ctx.reply(`<b>❗ Placar resetado com sucesso!</b>`, { parse_mode: 'HTML' }).then(async (m) => {
                         console.log(`Placar resetado com sucesso!`);
                         doubleData.countGreen = 0;
                         doubleData.countRed = 0;
