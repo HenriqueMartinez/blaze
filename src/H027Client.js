@@ -74,10 +74,31 @@ class H027Client extends Telegraf {
                 console.log('xereca');
             });
             
-            this.command(commandName, async (ctx) => {
-                console.log(commandName);
+            this.command('toggle', async (ctx) => {
+                if (ctx.message.from.id == this.ADMINISTRATOR_ID) {
+                    this.SESSION = this.SESSION == 'FREE' ? 'VIP' : 'FREE'
+                    await ctx.reply(`<b>❗ A sessão foi alterada para ${this.SESSION} com sucesso!</b>`, { parse_mode: 'HTML' }); 
+                }
+            });
+
+            this.command('stats', async (ctx) => {
+                if (ctx.message.from.id == this.ADMINISTRATOR_ID) {
+                    this.sendMessage(`<b>Placar atual: ${doubleData.countGreen} ✅ | ${doubleData.countRed} ❌</b>`).then(async (m) => {
+                        console.log('Placar enviado com sucesso.')
+                    });
+                }
             });
             
+            this.command('resetstats', async (ctx) => {
+                if (ctx.message.from.id == this.ADMINISTRATOR_ID) {
+                    await ctx.reply(`<b>❗ A sessão foi alterada para ${this.SESSION} com sucesso!</b>`, { parse_mode: 'HTML' }).then(async (m) => {
+                        console.log(`Placar resetado com sucesso!`);
+                        doubleData.countGreen = 0;
+                        doubleData.countRed = 0;
+                    });
+                }
+            });
+
             console.log(`Command ${commandName} has been loaded!`);
             return false;
         } catch (error) {
@@ -87,7 +108,7 @@ class H027Client extends Telegraf {
 
     async sendMessage(message) {
         try {
-            const toSend = await this.telegram.sendMessage(this.channelVIP, message, { parse_mode: 'HTML' });
+            const toSend = await this.telegram.sendMessage(this.SESSION == 'FREE' ? this.channelFREE : this.channelVIP, message, { parse_mode: 'HTML' });
 
             return toSend.message_id;
         } catch (error) {
@@ -97,7 +118,7 @@ class H027Client extends Telegraf {
 
     async replyMessage({ message, messageID }) {
         try {
-            const toReply = await this.telegram.sendMessage(this.channelVIP, message, { reply_to_message_id: messageID, parse_mode: 'HTML' });
+            const toReply = await this.telegram.sendMessage(this.SESSION == 'FREE' ? this.channelFREE : this.channelVIP, message, { reply_to_message_id: messageID, parse_mode: 'HTML' });
             return toReply.message_id;
         } catch (error) {
             console.log('Error reply message!');
@@ -106,7 +127,7 @@ class H027Client extends Telegraf {
 
     async deleteMessageWithID(message) {
         try {
-            await this.telegram.deleteMessage(this.channelVIP, message);
+            await this.telegram.deleteMessage(this.SESSION == 'FREE' ? this.channelFREE : this.channelVIP, message);
         } catch (error) {
             console.log('Error in delete message!');
         }
@@ -185,6 +206,9 @@ class H027Client extends Telegraf {
                     doubleData.standard = null;
                     doubleData.gale = 0;
                     doubleData.countGreen += 1;
+                    console.log('--------------------------------------------------');
+                    console.log(`+ ⚠️        ${doubleData.countGreen} ✅ | ${doubleData.countRed} ❌      ⚠️   +`);
+                    console.log('--------------------------------------------------');
                 });
             } else {
                 doubleData.gale += 1;
@@ -205,6 +229,9 @@ class H027Client extends Telegraf {
                         doubleData.standard = null;
                         doubleData.gale = 0;
                         doubleData.countRed += 1;
+                        console.log('--------------------------------------------------');
+                        console.log(`+ ⚠️        ${doubleData.countGreen} ✅ | ${doubleData.countRed} ❌      ⚠️   +`);
+                        console.log('--------------------------------------------------');
                     });
                 }
             }
